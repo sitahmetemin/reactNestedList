@@ -1,0 +1,38 @@
+ul {
+    list-style-type: none;
+}
+
+li > span {
+    cursor: pointer;
+}
+
+li > label {
+    cursor: pointer;
+}
+
+.not-caret {
+    padding-left: 14px;
+}
+
+.caret {
+
+    user-select: none;
+}
+
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+}
+
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
