@@ -117,7 +117,7 @@ class App extends Component {
             </li>
         })
 
-    }
+    };
 
     openSubList = (e, type) => {
         let parent = e.target.parentElement;
@@ -156,7 +156,7 @@ class App extends Component {
             parent.firstChild.classList.toggle("caret-down");
             parent.lastChild.classList.toggle("active");
         }
-    }
+    };
 
     handleChange = (e) => {
 
@@ -171,24 +171,26 @@ class App extends Component {
         }else {
             let temp = [];
 
-            for (let i = 0; i < this.state.menuList.length; i++) {
-                if (this.state.menuList[i].children !== null) {
+            let listCopy = JSON.parse(JSON.stringify(this.state.menuList));
 
-                    let result = this.recHandleChange(this.state.menuList[i].children, value);
+            for (let i = 0; i < listCopy.length; i++) {
+                if (listCopy[i].children !== null) {
+
+                    let result = this.recHandleChange(listCopy[i].children, value);
 
                     if (result.length > 0){
-                        let obj = this.state.menuList[i];
+                        let obj = listCopy[i];
                         obj.children = '';
                         obj.children = result;
                         temp.push(obj)
                     }
-                    else if (this.state.menuList[i].title.toUpperCase().includes(value)) {
-                        temp.push(this.state.menuList[i])
+                    else if (listCopy[i].title.toUpperCase().includes(value)) {
+                        temp.push(listCopy[i])
                     }
 
                 } else {
-                    if (this.state.menuList[i].title.toUpperCase().includes(value)) {
-                        temp.push(this.state.menuList[i])
+                    if (listCopy[i].title.toUpperCase().includes(value)) {
+                        temp.push(listCopy[i])
                     }
                 }
             }
@@ -202,7 +204,7 @@ class App extends Component {
 
 
 
-    }
+    };
 
     recHandleChange = (children, value) => {
         let saveList = [];
@@ -235,7 +237,7 @@ class App extends Component {
 
         return saveList;
 
-    }
+    };
 
 
     render() {
