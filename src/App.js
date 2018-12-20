@@ -171,6 +171,8 @@ class App extends Component {
         }else {
             let temp = [];
 
+            //Referas değerden kurtarmak için bu kodu yazdık.
+            // Eğer bu kodu yazmazsak state içindeki menu listi değiştiriyor
             let listCopy = JSON.parse(JSON.stringify(this.state.menuList));
 
             for (let i = 0; i < listCopy.length; i++) {
