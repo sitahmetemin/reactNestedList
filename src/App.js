@@ -11,28 +11,33 @@ class App extends Component {
             menuList: [
                 {
                     id: 1,
+                    isCheck: false,
                     parentId: null,
                     title: "Title 1",
                     children: [
                         {
                             id: 11,
+                            isCheck: false,
                             parentId: 1,
                             title: "Sub Title1-1",
                             children: null
                         },
                         {
                             id: 12,
+                            isCheck: false,
                             parentId: 1,
                             title: "Sub Title1-2",
                             children: [
                                 {
                                     id: 121,
+                                    isCheck: false,
                                     parentId: 12,
                                     title: "Sub Title1-2-1",
                                     children: null
                                 },
                                 {
                                     id: 122,
+                                    isCheck: false,
                                     parentId: 12,
                                     title: "Sub Title1-2-2",
                                     children: null
@@ -43,17 +48,20 @@ class App extends Component {
                 },
                 {
                     id: 2,
+                    isCheck: false,
                     parentId: null,
                     title: "Title 2",
                     children: [
                         {
                             id: 21,
+                            isCheck: false,
                             parentId: 2,
                             title: "Sub Title2-1",
                             children: null
                         },
                         {
                             id: 22,
+                            isCheck: false,
                             parentId: 2,
                             title: "Sub Title2-2",
                             children: null
@@ -62,22 +70,26 @@ class App extends Component {
                 },
                 {
                     id: 3,
+                    isCheck: false,
                     parentId: null,
                     title: "Title 3",
                     children: [
                         {
                             id: 31,
+                            isCheck: false,
                             parentId: 3,
                             title: "Sub Title3-1",
                             children: [
                                 {
                                     id: 311,
+                                    isCheck: false,
                                     parentId: 3,
                                     title: "Sub Title3-1-1",
                                     children: null
                                 },
                                 {
                                     id: 321,
+                                    isCheck: false,
                                     parentId: 3,
                                     title: "g",
                                     children: null
@@ -86,6 +98,7 @@ class App extends Component {
                         },
                         {
                             id: 32,
+                            isCheck: false,
                             parentId: 3,
                             title: "Sub Title3-2",
                             children: null
@@ -97,6 +110,7 @@ class App extends Component {
         }
     }
 
+    //Render'landığında çalışan metod
     recRenderList = (menu) => {
 
         // const {menuList} = this.state;
@@ -105,12 +119,12 @@ class App extends Component {
 
             return <li key={i}>
                 <span className={item.children !== null ? "caret" : "not-caret"}
-                      onClick={(e) => this.openSubList(e, 'caret')}/>
-                <input type="checkbox" onChange={(e) => this.openSubList(e, 'input')}/>
-                <label onClick={(e) => this.openSubList(e, 'title')}>{item.title}</label>
+                      onClick={(e) => this.openSubList(item, e)}/>
+                <input type="checkbox" onChange={(e) => this.openSubList(item, e)} checked={item.isCheck}/>
+                <label onClick={(e) => this.openSubList(item, e)}>{item.title}</label>
 
                 {item.children !== null ?
-                    <ul className="nested">
+                    <ul className={item.isCheck === true ? "nested active" : "nested"}>
                         {this.recRenderList(item.children)}
                     </ul>
                     : null}
@@ -119,56 +133,90 @@ class App extends Component {
 
     };
 
-    openSubList = (e, type) => {
-        let parent = e.target.parentElement;
-        let parameterElement = e.target;
+    changeChildrenIsCheck = (childrenList) => {
 
-        if (type === "input") {
+        for (let i = 0; i < childrenList.length; i++) {
 
-            // console.log(parameterElement.checked);
-            let elementsInput = parent.lastChild.getElementsByTagName("input");
+            childrenList[i].isCheck = !childrenList[i].isCheck;
 
-            if (parameterElement.checked) {
+            if (childrenList[i].children !== null) {
 
-                let elUL = parent.getElementsByTagName("ul");
-
-                for (let i = 0; i < elUL.length; i++) {
-
-                    elUL[i].classList.add("active");
-                    elUL[i].parentElement.firstChild.classList.add("caret-down");
-                }
-
-                for (let i = 0; i < elementsInput.length; i++) {
-
-                    elementsInput[i].checked = true;
-
-                }
-
-            } else {
-
-                for (let i = 0; i < elementsInput.length; i++) {
-
-                    elementsInput[i].checked = false;
-                }
+                this.changeChildrenIsCheck(childrenList[i].children);
             }
-
-        } else {
-            parent.firstChild.classList.toggle("caret-down");
-            parent.lastChild.classList.toggle("active");
         }
+
+
     };
 
+    //Checklendiğinde listenin açılması
+    openSubList = (item, el) => {
+
+        // console.log(el.target);
+
+        if (el.target.tagName === 'INPUT') {
+            item.isCheck = !item.isCheck;
+
+            if (item.children !== null) {
+                this.changeChildrenIsCheck(item.children)
+            }
+
+            //setState gerek olmadan render çalıştırma
+            this.forceUpdate();
+
+        }
+
+
+        console.log('new mneulist', this.state.menuList);
+
+
+        // let parent = e.target.parentElement;
+        // let parameterElement = e.target;
+        //
+        // if (type === "input") {
+        //     let elementsInput = parent.lastChild.getElementsByTagName("input");
+        //
+        //     if (parameterElement.checked) {
+        //
+        //         let elUL = parent.getElementsByTagName("ul");
+        //
+        //         for (let i = 0; i < elUL.length; i++) {
+        //
+        //             elUL[i].classList.add("active");
+        //             elUL[i].parentElement.firstChild.classList.add("caret-down");
+        //         }
+        //
+        //         for (let i = 0; i < elementsInput.length; i++) {
+        //
+        //             elementsInput[i].checked = true;
+        //
+        //         }
+        //
+        //     } else {
+        //
+        //         for (let i = 0; i < elementsInput.length; i++) {
+        //
+        //             elementsInput[i].checked = false;
+        //         }
+        //     }
+        //
+        // } else {
+        //     parent.firstChild.classList.toggle("caret-down");
+        //     parent.lastChild.classList.toggle("active");
+        // }
+    };
+
+    //Arama metodu
     handleChange = (e) => {
 
         let value = e.target.value.toUpperCase();
 
         if (value.length === 0) {
             this.setState({
-                searchResultList : []
+                searchResultList: []
 
                 //todo: tüm inputlar checked false yapılacak
             })
-        }else {
+        } else {
             let temp = [];
 
             //Referas değerden kurtarmak için bu kodu yazdık.
@@ -180,7 +228,7 @@ class App extends Component {
 
                     let result = this.recHandleChange(listCopy[i].children, value);
 
-                    if (result.length > 0){
+                    if (result.length > 0) {
                         let obj = listCopy[i];
                         obj.children = '';
                         obj.children = result;
@@ -198,16 +246,14 @@ class App extends Component {
             }
 
             this.setState({
-                searchResultList:temp
+                searchResultList: temp
             });
         }
 
 
-
-
-
     };
 
+    //Arama metodu Recursive
     recHandleChange = (children, value) => {
         let saveList = [];
 
@@ -217,7 +263,7 @@ class App extends Component {
                 let childArray = this.recHandleChange(children[i].children, value);
 
 
-                if (childArray.length > 0){
+                if (childArray.length > 0) {
                     let obj = children[i];
                     obj.children = '';
                     obj.children = childArray;
