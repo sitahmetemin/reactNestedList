@@ -84,7 +84,7 @@ class App extends Component {
                                     id: 311,
                                     isCheck: false,
                                     parentId: 3,
-                                    title: "Sub Title3-1-1",
+                                    title: "Sub Title",
                                     children: null
                                 },
                                 {
@@ -106,7 +106,8 @@ class App extends Component {
                     ]
                 }
             ],
-            searchResultList: []
+            searchResultList: [],
+            notFoundMessage: ''
         }
     }
 
@@ -124,7 +125,7 @@ class App extends Component {
                 <label onClick={(e) => this.openSubList(item, e)}>{item.title}</label>
 
                 {item.children !== null ?
-                    <ul className={item.isCheck === true ? "nested active" : "nested"}>
+                    <ul className="nested">
                         {this.recRenderList(item.children)}
                     </ul>
                     : null}
@@ -133,15 +134,15 @@ class App extends Component {
 
     };
 
-    changeChildrenIsCheck = (childrenList) => {
+    changeChildrenIsCheck = (childrenList, pIsCheck) => {
 
         for (let i = 0; i < childrenList.length; i++) {
 
-            childrenList[i].isCheck = !childrenList[i].isCheck;
+            childrenList[i].isCheck = pIsCheck;
 
             if (childrenList[i].children !== null) {
 
-                this.changeChildrenIsCheck(childrenList[i].children);
+                this.changeChildrenIsCheck(childrenList[i].children, childrenList[i].isCheck);
             }
         }
 
@@ -151,22 +152,43 @@ class App extends Component {
     //Checklendiğinde listenin açılması
     openSubList = (item, el) => {
 
-        // console.log(el.target);
-
         if (el.target.tagName === 'INPUT') {
+            let elementArray = el.target.parentElement.getElementsByTagName("span");
+            let elementULArray = el.target.parentElement.getElementsByTagName("ul");
+            for (let element of elementArray) {
+                if (element.classList.contains('caret-down') === false) {
+                    element.classList.add('caret-down');
+                }
+
+            }
+
+            for (let element of elementULArray) {
+                if (element.classList.contains('active') === false) {
+                    element.classList.add('active');
+                }
+
+            }
             item.isCheck = !item.isCheck;
 
             if (item.children !== null) {
-                this.changeChildrenIsCheck(item.children)
+                this.changeChildrenIsCheck(item.children, item.isCheck)
             }
 
             //setState gerek olmadan render çalıştırma
             this.forceUpdate();
 
+        } else {
+
+            el.target.parentElement.lastChild.classList.toggle("active");
+            el.target.parentElement.firstChild.classList.toggle("caret-down");
+            // el.target.parentElement.lastChild.classList.toggle("active");
         }
 
+        this.updateLists()
 
-        console.log('new mneulist', this.state.menuList);
+
+        // console.log('new mneulist', this.state.menuList);
+        // console.log('new slist', this.state.searchResultList);
 
 
         // let parent = e.target.parentElement;
@@ -213,10 +235,9 @@ class App extends Component {
         if (value.length === 0) {
             this.setState({
                 searchResultList: []
-
-                //todo: tüm inputlar checked false yapılacak
             })
         } else {
+
             let temp = [];
 
             //Referas değerden kurtarmak için bu kodu yazdık.
@@ -245,15 +266,43 @@ class App extends Component {
                 }
             }
 
-            this.setState({
-                searchResultList: temp
-            });
-        }
+            if (temp.length > 0) {
 
+
+                this.setState({
+                    searchResultList: temp,
+                    notFoundMessage: ''
+                });
+
+            } else {
+                this.setState({
+                    notFoundMessage: 'not found'
+                });
+            }
+
+
+        }
 
     };
 
-    //Arama metodu Recursive
+    updateLists = () => {
+
+        console.log('geldi');
+        const {menuList, searchResultList} = this.state;
+
+        for (let searchElement of searchResultList) {
+
+            searchElement = 'asdfa';
+            console.log(searchElement);
+            let match = menuList.filter(f => f.title === searchElement.title);
+
+        }
+        
+        this.forceUpdate();
+    };
+
+
+    //Arama metodu child Recursive
     recHandleChange = (children, value) => {
         let saveList = [];
 
@@ -289,10 +338,14 @@ class App extends Component {
 
 
     render() {
+        console.log('new mneulist', this.state.menuList);
+
+        console.log('new slist', this.state.searchResultList);
 
         return (
             <Fragment>
-                <input type="text" onChange={(e) => this.handleChange(e)} placeholder="Search..."/>
+                <input type="text" id="searchInput" onChange={(e) => this.handleChange(e)} placeholder="Search..."/>
+                {this.state.notFoundMessage}
                 <ul>
                     {this.state.searchResultList.length > 0 ? this.recRenderList(this.state.searchResultList) :
                         this.recRenderList(this.state.menuList)}
