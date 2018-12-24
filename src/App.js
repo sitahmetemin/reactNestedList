@@ -14,12 +14,14 @@ class App extends Component {
                     isCheck: false,
                     parentId: null,
                     title: "Title 1",
+                    isActive: false,
                     children: [
                         {
                             id: 11,
                             isCheck: false,
                             parentId: 1,
                             title: "Sub Title1-1",
+                            isActive: false,
                             children: null
                         },
                         {
@@ -27,12 +29,14 @@ class App extends Component {
                             isCheck: false,
                             parentId: 1,
                             title: "Sub Title1-2",
+                            isActive: false,
                             children: [
                                 {
                                     id: 121,
                                     isCheck: false,
                                     parentId: 12,
                                     title: "Sub Title1-2-1",
+                                    isActive: false,
                                     children: null
                                 },
                                 {
@@ -40,6 +44,7 @@ class App extends Component {
                                     isCheck: false,
                                     parentId: 12,
                                     title: "Sub Title1-2-2",
+                                    isActive: false,
                                     children: null
                                 }
                             ]
@@ -51,12 +56,14 @@ class App extends Component {
                     isCheck: false,
                     parentId: null,
                     title: "Title 2",
+                    isActive: false,
                     children: [
                         {
                             id: 21,
                             isCheck: false,
                             parentId: 2,
                             title: "Sub Title2-1",
+                            isActive: false,
                             children: null
                         },
                         {
@@ -64,6 +71,7 @@ class App extends Component {
                             isCheck: false,
                             parentId: 2,
                             title: "Sub Title2-2",
+                            isActive: false,
                             children: null
                         }
                     ]
@@ -73,18 +81,21 @@ class App extends Component {
                     isCheck: false,
                     parentId: null,
                     title: "Title 3",
+                    isActive: false,
                     children: [
                         {
                             id: 31,
                             isCheck: false,
                             parentId: 3,
                             title: "Sub Title3-1",
+                            isActive: false,
                             children: [
                                 {
                                     id: 311,
                                     isCheck: false,
                                     parentId: 3,
                                     title: "Sub Title",
+                                    isActive: false,
                                     children: null
                                 },
                                 {
@@ -92,6 +103,7 @@ class App extends Component {
                                     isCheck: false,
                                     parentId: 3,
                                     title: "g",
+                                    isActive: false,
                                     children: null
                                 }
                             ]
@@ -101,6 +113,7 @@ class App extends Component {
                             isCheck: false,
                             parentId: 3,
                             title: "Sub Title3-2",
+                            isActive: false,
                             children: null
                         }
                     ]
@@ -119,13 +132,11 @@ class App extends Component {
         return menu.map((item, i) => {
 
             return <li key={i}>
-                <span className={item.children !== null ? "caret" : "not-caret"}
-                      onClick={(e) => this.openSubList(item, e)}/>
+                <span className={item.children !== null ? (item.isActive===true ? "caret caret-down" : "caret") : "not-caret"} onClick={(e) => this.openSubList(item, e)}/>
                 <input type="checkbox" onChange={(e) => this.openSubList(item, e)} checked={item.isCheck}/>
                 <label onClick={(e) => this.openSubList(item, e)}>{item.title}</label>
-
                 {item.children !== null ?
-                    <ul className="nested">
+                    <ul className={item.isActive === true ? "nested active" : "nested"}>
                         {this.recRenderList(item.children)}
                     </ul>
                     : null}
@@ -232,7 +243,7 @@ class App extends Component {
 
         let value = e.target.value.toUpperCase();
 
-        if (value.length === 0) {
+        if (value.length === 0 || this.state.notFoundMessage.length!==0) {
             this.setState({
                 searchResultList: []
             })
@@ -252,6 +263,7 @@ class App extends Component {
                     if (result.length > 0) {
                         let obj = listCopy[i];
                         obj.children = '';
+                        obj.isActive = true;
                         obj.children = result;
                         temp.push(obj)
                     }
@@ -276,10 +288,10 @@ class App extends Component {
 
             } else {
                 this.setState({
-                    notFoundMessage: 'not found'
+                    notFoundMessage: 'not found',
+                    searchResultList: []
                 });
             }
-
 
         }
 
@@ -287,17 +299,24 @@ class App extends Component {
 
     updateLists = () => {
 
-        console.log('geldi');
+        //todo : BURDAYIZ ... data manipulation
+
+
         const {menuList, searchResultList} = this.state;
 
         for (let searchElement of searchResultList) {
 
-            searchElement = 'asdfa';
-            console.log(searchElement);
-            let match = menuList.filter(f => f.title === searchElement.title);
+            for (let mElement of menuList) {
+
+                if (mElement.title === searchElement.title) {
+
+                    mElement = {...mElement, isCheck: searchElement.isCheck}
+                }
+
+            }
 
         }
-        
+
         this.forceUpdate();
     };
 
@@ -315,6 +334,7 @@ class App extends Component {
                 if (childArray.length > 0) {
                     let obj = children[i];
                     obj.children = '';
+                    obj.isActive = true;
                     obj.children = childArray;
 
                     saveList.push(obj)
@@ -328,6 +348,7 @@ class App extends Component {
             } else {
                 if (children[i].title.toUpperCase().includes(value)) {
                     saveList.push(children[i])
+
                 }
             }
         }
