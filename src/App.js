@@ -12,14 +12,12 @@ class App extends Component {
                 {
                     id: 1,
                     isCheck: false,
-                    parentId: null,
                     title: "Title 1",
                     isActive: false,
                     children: [
                         {
                             id: 11,
                             isCheck: false,
-                            parentId: 1,
                             title: "Sub Title1-1",
                             isActive: false,
                             children: null
@@ -27,14 +25,12 @@ class App extends Component {
                         {
                             id: 12,
                             isCheck: false,
-                            parentId: 1,
                             title: "Sub Title1-2",
                             isActive: false,
                             children: [
                                 {
                                     id: 121,
                                     isCheck: false,
-                                    parentId: 12,
                                     title: "Sub Title1-2-1",
                                     isActive: false,
                                     children: null
@@ -42,7 +38,6 @@ class App extends Component {
                                 {
                                     id: 122,
                                     isCheck: false,
-                                    parentId: 12,
                                     title: "Sub Title1-2-2",
                                     isActive: false,
                                     children: null
@@ -54,14 +49,12 @@ class App extends Component {
                 {
                     id: 2,
                     isCheck: false,
-                    parentId: null,
                     title: "Title 2",
                     isActive: false,
                     children: [
                         {
                             id: 21,
                             isCheck: false,
-                            parentId: 2,
                             title: "Sub Title2-1",
                             isActive: false,
                             children: null
@@ -69,7 +62,6 @@ class App extends Component {
                         {
                             id: 22,
                             isCheck: false,
-                            parentId: 2,
                             title: "Sub Title2-2",
                             isActive: false,
                             children: null
@@ -79,21 +71,18 @@ class App extends Component {
                 {
                     id: 3,
                     isCheck: false,
-                    parentId: null,
                     title: "Title 3",
                     isActive: false,
                     children: [
                         {
                             id: 31,
                             isCheck: false,
-                            parentId: 3,
                             title: "Sub Title3-1",
                             isActive: false,
                             children: [
                                 {
                                     id: 311,
                                     isCheck: false,
-                                    parentId: 3,
                                     title: "Sub Title",
                                     isActive: false,
                                     children: null
@@ -101,7 +90,6 @@ class App extends Component {
                                 {
                                     id: 321,
                                     isCheck: false,
-                                    parentId: 3,
                                     title: "g",
                                     isActive: false,
                                     children: null
@@ -111,7 +99,6 @@ class App extends Component {
                         {
                             id: 32,
                             isCheck: false,
-                            parentId: 3,
                             title: "Sub Title3-2",
                             isActive: false,
                             children: null
