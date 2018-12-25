@@ -132,7 +132,7 @@ class App extends Component {
         return menu.map((item, i) => {
 
             return <li key={i}>
-                <span className={item.children !== null ? (item.isActive===true ? "caret caret-down" : "caret") : "not-caret"} onClick={(e) => this.openSubList(item, e)}/>
+                <span className={item.children !== null ? (item.isActive === true ? "caret caret-down" : "caret") : "not-caret"} onClick={(e) => this.openSubList(item, e)}/>
                 <input type="checkbox" onChange={(e) => this.openSubList(item, e)} checked={item.isCheck}/>
                 <label onClick={(e) => this.openSubList(item, e)}>{item.title}</label>
                 {item.children !== null ?
@@ -195,47 +195,44 @@ class App extends Component {
             // el.target.parentElement.lastChild.classList.toggle("active");
         }
 
-        this.updateLists()
+        this.updateLists(this.state.menuList, this.state.searchResultList)
 
 
         // console.log('new mneulist', this.state.menuList);
         // console.log('new slist', this.state.searchResultList);
 
+    };
 
-        // let parent = e.target.parentElement;
-        // let parameterElement = e.target;
-        //
-        // if (type === "input") {
-        //     let elementsInput = parent.lastChild.getElementsByTagName("input");
-        //
-        //     if (parameterElement.checked) {
-        //
-        //         let elUL = parent.getElementsByTagName("ul");
-        //
-        //         for (let i = 0; i < elUL.length; i++) {
-        //
-        //             elUL[i].classList.add("active");
-        //             elUL[i].parentElement.firstChild.classList.add("caret-down");
-        //         }
-        //
-        //         for (let i = 0; i < elementsInput.length; i++) {
-        //
-        //             elementsInput[i].checked = true;
-        //
-        //         }
-        //
-        //     } else {
-        //
-        //         for (let i = 0; i < elementsInput.length; i++) {
-        //
-        //             elementsInput[i].checked = false;
-        //         }
-        //     }
-        //
-        // } else {
-        //     parent.firstChild.classList.toggle("caret-down");
-        //     parent.lastChild.classList.toggle("active");
-        // }
+    updateLists = (mList, sList) => {
+
+        //todo : BURDAYIZ ... data manipulation
+        // console.log('slist', this.state.searchResultList);
+
+
+        for (let searchElement of sList) {
+
+            for (let mElement of mList) {
+
+                if (mElement.title === searchElement.title) {
+
+                    if (searchElement.children !== null) {
+
+                        this.updateLists(mElement.children, searchElement.children);
+                    }
+
+                    mElement.isCheck = searchElement.isCheck;
+                    // mElement.isActive = searchElement.isActive;
+
+                    // console.log(mElement.isCheck);
+                }
+
+            }
+
+        }
+
+        // this.forceUpdate();
+
+        console.log("mList", this.state.menuList);
     };
 
     //Arama metodu
@@ -243,7 +240,7 @@ class App extends Component {
 
         let value = e.target.value.toUpperCase();
 
-        if (value.length === 0 || this.state.notFoundMessage.length!==0) {
+        if (value.length === 0 || this.state.notFoundMessage.length !== 0) {
             this.setState({
                 searchResultList: []
             })
@@ -297,29 +294,6 @@ class App extends Component {
 
     };
 
-    updateLists = () => {
-
-        //todo : BURDAYIZ ... data manipulation
-
-
-        const {menuList, searchResultList} = this.state;
-
-        for (let searchElement of searchResultList) {
-
-            for (let mElement of menuList) {
-
-                if (mElement.title === searchElement.title) {
-
-                    mElement = {...mElement, isCheck: searchElement.isCheck}
-                }
-
-            }
-
-        }
-
-        this.forceUpdate();
-    };
-
 
     //Arama metodu child Recursive
     recHandleChange = (children, value) => {
@@ -359,9 +333,9 @@ class App extends Component {
 
 
     render() {
-        console.log('new mneulist', this.state.menuList);
-
-        console.log('new slist', this.state.searchResultList);
+        // console.log('new mneulist', this.state.menuList);
+        //
+        // console.log('new slist', this.state.searchResultList);
 
         return (
             <Fragment>
