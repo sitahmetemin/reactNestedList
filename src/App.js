@@ -290,12 +290,18 @@ class App extends Component {
 
         return (
             <Fragment>
-                <input type="text" id="searchInput" onChange={(e) => this.handleChange(e)} placeholder="Search..."/>
-                {this.state.notFoundMessage}
-                <ul>
-                    {this.state.searchResultList.length > 0 ? this.recRenderList(this.state.searchResultList) :
-                        this.recRenderList(this.state.menuList)}
-                </ul>
+                <div className="card">
+                    <div className="search">
+                        <input type="text" id="searchInput" className="searchInput" onChange={(e) => this.handleChange(e)} placeholder="Search..."/>
+                        <div style={{color:'red'}}>{this.state.notFoundMessage}</div>
+                    </div>
+                    <hr/>
+                    <ul>
+                        {this.state.searchResultList.length > 0 ? this.recRenderList(this.state.searchResultList) :
+                            this.recRenderList(this.state.menuList)}
+                    </ul>
+                </div>
+
             </Fragment>
         );
     }
