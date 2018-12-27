@@ -198,9 +198,10 @@ class App extends Component {
 
         let value = e.target.value.toUpperCase();
 
-        if (value.length === 0 || this.state.notFoundMessage.length !== 0) {
+        if (value.length === 0) {
             this.setState({
-                searchResultList: []
+                searchResultList: [],
+                notFoundMessage: ''
             })
         } else {
 
