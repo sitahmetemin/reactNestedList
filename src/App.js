@@ -16,20 +16,27 @@ class App extends Component {
 
     }
 
-
+    //gelen datanın türünü algılamay yarayan metod
     getEditedData = () => {
 
+        //propsla datayı yakaladık
         let propsData = this.props.data;
 
+        //datanın içinde parentID yoksa tree yapıdadır. burada onun kontrolünü yaptık.
+        // Tree yapıda değilse biz bu if yapısının içinde onu tree yapıya çeviriyoruz.
         let parentID = this.props.parentId;
         if (typeof this.props.data[0][this.props.parentId] !== "undefined") {
 
+            //Parentleri yakaladık
             let filterParent = propsData.filter(f => typeof f[parentID] !== "number" || f[parentID] < 1);
 
+            //İşlemler sonucunda geri döndürülecek datayı tanımladık
             let resultList = [];
 
+            //for ile parentleri dolaşıp childleri tree yapıya sokuyoruz
             for (let item of filterParent) {
 
+                //recursive metodumuzu çağırdık.
                 let resultObj = this.editData(item, propsData);
 
                 resultList.push(resultObj);
@@ -42,6 +49,7 @@ class App extends Component {
 
             for (let obj of propsData) {
 
+                //data tree yapıdaysa çalışacak recursive metodu çağırdık.
                 this.editTreeData(obj);
 
             }
@@ -50,6 +58,7 @@ class App extends Component {
         }
     };
 
+    // tree yapıdaki dataya veri eklemesi yaptık.
     editTreeData = (obj) => {
 
         if (obj.children !== null) {
@@ -61,6 +70,8 @@ class App extends Component {
         }
     };
 
+    // bu metod recursive şekilde çalışıyor ve parentlerden aldığımız
+    // verileri alıp tree yapıya çeviriyor.
     editData = (item, data) => {
 
         let parentID = this.props.parentId;
@@ -83,13 +94,9 @@ class App extends Component {
 
             item.children = null;
             item.isActive = false;
-
-
         }
 
         return item;
-
-
     };
 
 
@@ -162,7 +169,6 @@ class App extends Component {
 
         this.updateLists(this.state.menuList, this.state.searchResultList)
 
-
     };
 
     updateLists = (mList, sList) => {
@@ -179,18 +185,11 @@ class App extends Component {
                     }
 
                     mElement[this.props.isCheck] = searchElement[this.props.isCheck];
-                    // mElement.isActive = searchElement.isActive;
-
-                    // console.log(mElement.isCheck);
                 }
 
             }
 
         }
-
-        // this.forceUpdate();
-
-        // console.log("mList", this.state.menuList);
     };
 
     //Arama metodu
@@ -235,7 +234,6 @@ class App extends Component {
 
             if (temp.length > 0) {
 
-
                 this.setState({
                     searchResultList: temp,
                     notFoundMessage: ''
@@ -262,7 +260,6 @@ class App extends Component {
 
                 let childArray = this.recHandleChange(children[i].children, value);
 
-
                 if (childArray.length > 0) {
                     let obj = children[i];
                     obj.children = '';
@@ -270,7 +267,6 @@ class App extends Component {
                     obj.children = childArray;
 
                     saveList.push(obj)
-
 
                 }
                 else if (children[i][this.props.title].toUpperCase().includes(value)) {
