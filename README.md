@@ -2,7 +2,13 @@
 
 ## Nedir?
 
+İç içe geçmiş işaretlenebilir liste uygulaması.
 
+## Önemli
+
+Componente Ağaç yapısında ya da tek seviye veriyi props kullanarak gönderebilirsiniz. Uygulama bunu parentID bölümünden ayırt edip size istediğiniz sonucu çıktı olarak verecek.
+
+## Nasıl Kullanılır?
 
 Uygulamayı Kurabilmek için node modüllerinin kurulması gerelli. 
 
@@ -15,11 +21,11 @@ Uygulamayı başlatmak için
 komutunu kullanabilsiniz.
 
 To-Do:
- - [X] Nested List
- - [X] Search List List 
+ - [X] İç içe geçmiş Liste
+ - [X] Arama Yapabilme 
  - [X] İşaretlenebilirlik
- - [X] Tree Veri Yapısı
- - [X] Tek Level Veri Yapısı
+ - [X] Ağaç Veri Yapısı
+ - [X] Tek Seviye Veri Yapısı
 
 <br/>
 
@@ -29,15 +35,15 @@ Uygulamanın Örnek Resimleri
 
 #### Normal Görüntü
 
-![React Nested List](https://ultraimg.com/images/2018/12/30/PKUY.jpg)
+![React Nested List](http://imgs.fyi/img/6y09.jpg)
 
 #### Arama Görüntü
 
-![React Nested List](https://ultraimg.com/images/2018/12/30/PKUv.jpg)
+![React Nested List](http://imgs.fyi/img/6y0a.jpg)
 
 #### İçerik Bulunamadı Görüntü
 
-![React Nested List](https://ultraimg.com/images/2018/12/30/PKUM.jpg)
+![React Nested List](http://imgs.fyi/img/6y0b.jpg)
 
 </p>
 
